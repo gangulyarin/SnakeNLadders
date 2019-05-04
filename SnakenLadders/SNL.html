@@ -1,0 +1,367 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+var uname1;
+var uname2;
+var single;
+var turn=1;
+var score1=1;
+var score2=1;
+var oldscore;
+
+function move(step)
+{
+	
+	if(turn==1)
+	{
+		oldScore=score1;
+		score1=parseInt(parseInt(score1)+parseInt(step));
+		row=score1/10;
+		col=(score1%10);
+		//drawPawn(turn,(20+(col*50)),(470-(row*50)));
+		drawPawn();
+		if(score1==3||score1==6||score1==20||score1==36||score1==63||score1==68)
+		{
+			//$('#Number').slideUp();
+			if(score1==3)
+				score1=51;
+			else if(score1==6)
+				score1=27;
+			else if(score1==20)
+				score1=70;
+			else if(score1==36)
+				score1=55;
+			else if(score1==63)
+				score1=95;
+			else if(score1==68)
+				score1=98;
+			$('#Ladder_info').slideDown();
+		}
+		else if(score1==25|| score1==34||score1==47||score1==65||score1==87||score1==91||score1==99)
+		{
+			//$('#Number').slideUp();
+			if(score1==25)
+				score1=5;
+			else if(score1==34)
+				score1=1;
+			else if(score1==47)
+				score1=19;
+			else if(score1==65)
+				score1=52;
+			else if(score1==87)
+				score1=57;
+			else if(score1==91)
+				score1=61;
+			else if(score1==99)
+				score1=69;
+			$('#Snake_info').slideDown();
+		}
+		else if(score1==100)
+		{
+			$('#Win').slideDown();
+		}
+		else
+		{
+			score=score1;
+			if(single==0)
+			{
+				$('#turnheading').text(uname2);
+			}
+			else
+			{
+				$('#turnheading').text('Computer');
+			}
+			turn=2;
+			$('#Dice').slideDown();
+			$('#stop_roll').toggle();
+			$('#roll').toggle();
+		}
+	}
+	else
+	{
+		
+		oldScore=score2;
+		score2=parseInt(parseInt(score2)+parseInt(step));
+		row=score2/10;
+		col=(score2%10);
+		//drawPawn(turn,(20+(col*50)),(470-(row*50)));
+		drawPawn();
+		if(score2==3||score2==6||score2==20||score2==36||score2==63||score2==68)
+		{
+			//$('#Number').slideUp();
+			if(score2==3)
+				score2=51;
+			else if(score2==6)
+				score2=27;
+			else if(score2==20)
+				score2=70;
+			else if(score2==36)
+				score2=55;
+			else if(score2==63)
+				score2=95;
+			else if(score2==68)
+				score2=98;
+			$('#Ladder_info').slideDown();
+		}
+		else if(score2==25|| score2==34||score2==47||score2==65||score2==87||score2==91||score2==99)
+		{
+			//$('#Number').slideUp();
+			if(score2==25)
+				score2=5;
+			else if(score2==34)
+				score2=1;
+			else if(score2==47)
+				score2=19;
+			else if(score2==65)
+				score2=52;
+			else if(score2==87)
+				score2=57;
+			else if(score2==91)
+				score2=61;
+			else if(score2==99)
+				score2=69;
+			$('#Snake_info').slideDown();
+		}
+		else
+		{
+			$('#turnheading').text(uname1);
+			turn=1;
+			score=score2;
+			$('#Dice').slideDown();
+			$('#stop_roll').toggle();
+			$('#roll').toggle();
+		}
+	}
+	
+	
+}
+function dicearrowcomputer()
+{
+	var r= Math.floor(Math.random()*5+1)*15;
+	//alert(r);
+	('#dicearrow').animate({
+		paddingLeft: r
+	});
+	$('#dice_number').text(r/15);
+}
+function drawPawn()
+{
+	row=Math.floor(score1/10);
+	col=(score1%10);
+	if(col==0)
+	{
+		col=10;
+		row--;
+	}
+	$('#ghuti1').animate({
+		paddingLeft:(20+((col-1)*50)),
+		paddingTop: (470-((row)*50))
+	});
+	row=Math.floor(score2/10);
+	col=(score2%10);
+	if(col==0)
+	{
+		col=10;
+		row--;
+	}
+	$('#ghuti2').animate({
+		paddingLeft:(20+((col-1)*50)),
+		paddingTop: (470-((row)*50))
+	});
+	
+}
+function dicearrowanimate2(x){
+		if(x+15<=105){
+			x+=15;
+			$('#dicearrow').animate({
+				paddingLeft : x
+			},1,function(){dicearrowanimate2(x)});
+			
+		}
+		else{
+			$('#dicearrow').animate({
+				paddingLeft : '1px'
+			},1,function(){dicearrowanimate2(x)});
+			x=1;
+		}
+		$('#stop_roll').click(function(){
+		$('#dicearrow').stop(true);
+		y=($('#dicearrow').css("paddingLeft")).substr(0,($('#dicearrow').css("paddingLeft")).length-2);
+		//alert(y/15);
+		if(Math.floor(y/15)==0)
+			$('#dice_number').text(1);
+		else
+			$('#dice_number').text(Math.floor(y/15));
+		//alert($('#dice_number').text());
+		$('#Dice').slideUp();
+		$('#Number').slideDown();
+	});	
+}
+
+function dicearrowanimate(x){
+	$('#roll').toggle();
+	if(turn==1){
+		
+		$('#stop_roll').toggle();
+		dicearrowanimate2(x);
+	}
+	else{
+		if(single==0){
+			
+			$('#stop_roll').toggle();
+			dicearrowanimate2(x);
+		}
+		else{
+			$('#stop_roll').toggle();
+			dicearrowcomputer();
+		}
+	}
+}
+
+$(document).ready(function(){
+	$('#single').click(function(){
+		$('#player').slideUp();
+		$('#single_name').slideDown();
+		single=1;
+	});
+	$('#multi').click(function(){
+		$('#player').slideUp();
+		$('#multi_name').slideDown();
+		single=0;
+	});
+	$('#single_name_button').click(function(){
+		uname1=$('#player1').val();
+		$('#single_name').slideUp();
+		$('#game').slideDown();
+		drawPawn();
+		$('#turnheading').text(uname1);
+	});
+	$('#multi_name_button').click(function(){
+		uname1=$('#player1').val();
+		uname2=$('#player2').val();
+		$('#multi_name').slideUp();
+		$('#game').slideDown();
+		drawPawn();
+		$('#turnheading').text(uname1);
+	});
+	$('#num_ok').click(function(){
+		$('#Number').slideUp();
+		move($('#dice_number').text());
+	});
+	$('#ladder_ok').click(function(){
+		$('#Ladder_info').slideUp();
+		move(0);
+	});
+	$('#snake_ok').click(function(){
+		$('#Snake_info').slideUp();
+		move(0);
+	});
+	$('#win_ok').click(function(){
+		$('#game').slideUp();
+		$('#Winner').slideDown();
+		if(score1==100)
+			$('#win_msg').text(uname1+" Wins.. Congo..\n"+uname2+" Looses");
+		else
+			$('#win_msg').text(uname2+" Wins.. Congo..\n"+uname1+" Looses");
+	});
+	$('#new_game').click(function(){
+		$('#game').slideUp();
+		turn=1;
+		score1=1;
+		score2=1;
+		$('#player').slideDown();
+	});
+});
+
+</script>
+<title>Untitled Document</title>
+</head>
+
+<body>
+<div class="container">
+	<div class="jumbotron">
+    	<h2>SNAKE & LADDERS</h2>
+        <br />
+        
+    	<div id="player">
+        	<h3>
+        		PLAY WITH
+        	</h3>
+            <button id="single" type="button" class="btn btn-primary btn-lg btn-block">COMPUTER</button>
+            <button id="multi" type="button" class="btn btn-primary btn-lg btn-block">ANOTHER PLAYER</button>
+        </div>
+        <div id="single_name" class="well well-lg"  style="display:none">
+        	<div class="form-group">
+            	<label for="name">Enter Your Username</label>
+                <input type="text" class="form-control" id="player1" />
+                <br />
+                <center>
+                <button id="single_name_button" type="button" class="btn btn-lg btn-primary">PLAY</button>
+                </center>
+            </div>
+        </div>
+        <div id="multi_name" class="well well-lg" style="display:none">
+        	<div class="form-group">
+            	<label for="name">Enter Your Username</label>
+                <input type="text" class="form-control" id="player1" />
+                <br />
+                <label for="name">Enter Player 2 Username</label>
+                <input type="text" class="form-control" id="player2" />
+                <br />
+                <center>
+                <button id="multi_name_button" type="button" class="btn btn-lg btn-primary">PLAY</button>
+                </center>
+            </div>
+        </div>
+        <div id="game" class="well well-lg" style="display:none">
+        	<table>
+            <tr>
+            <td>
+            <div style="background-image:url(SnakeLaddersA4.jpg ); background-size: 500px 500px; height:500px; width:500px">
+            <!--<canvas id="game_canvas" height="500px" width="500px">
+            </canvas>-->
+            	<img src="ghuti1.png" id="ghuti1" style="padding-left:20; padding-top:470; position:absolute" />
+                <img src="ghuti2.png" id="ghuti2" style="padding-left:20; padding-top:470; position:absolute" />
+            </div>
+            </td>
+            <td>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            </td>
+            <td>
+            	<button id="new_game" type="button" class="btn btn-lg btn-primary">New Game</button>
+            	<h2><p id="turnheading"></p></h2>
+            	<div id="Dice" class="well well-sm" style="background-color:#FFF">
+                    <p><h3>1&nbsp;2&nbsp;3&nbsp;4&nbsp;5&nbsp;6</h3></p>
+                    <p id="arrow"><img id="dicearrow" src="dicearrow.png" style="padding-left:0px" /></p>
+                    <button id="roll" type="button" class="btn btn-lg btn-primary" onclick="dicearrowanimate(0)">START ROLL</button>
+                    <button id="stop_roll" type="button" class="btn btn-lg btn-primary" style="display:none">STOP ROLL</button>
+                </div>
+                <div id="Number" class="well well-sm" style="background-color:#FFF; display:none">
+                	<h2><p id="dice_number"></p></h2><button id="num_ok" type="button" class="btn btn-lg btn-primary">OK</button>
+                </div>
+                <div id="Ladder_info" class="well well-sm" style="background-color:#FFF; display:none">
+                	<h2><p>Hey!! Ladder :)<button id="ladder_ok" type="button" class="btn btn-lg btn-primary">OK</button></p></h2>
+                </div>
+                <div id="Snake_info" class="well well-sm" style="background-color:#FFF; display:none">
+                	<h2><p>OMG!! Snake :( <button id="snake_ok" type="button" class="btn btn-lg btn-primary">OK</button></p></h2>
+                </div>
+                <div id="Win" class="well well-sm" style="background-color:#FFF; display:none">
+                	<h2><p>YOU WON!!( <button id="win_ok" type="button" class="btn btn-lg btn-primary">OK</button></p></h2>
+                </div>
+            </td>
+            </tr>
+            </table>
+        </div>
+        <div id="Winner" class="well well-lg" style="display:none">
+        	<h2><p id="win_msg"></p></h2>
+        </div>
+    </div>
+</div>
+</body>
+</html>
